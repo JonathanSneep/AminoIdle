@@ -8,6 +8,6 @@ You start as a simple cell. Your journey is about growth, evolution, and facing 
 
 ## How to Play
 
-Simply visit the game at [Amino: The Cosmic Journey](https://devjon.com/amino/idle.html) to start your journey. The game is designed to be intuitive and engaging.
+Simply visit the game at [Amino Idle on DevJon](https://devjon.com/amino/idle.html) to start your journey. The game is designed to be intuitive and engaging.
 
 Everyone and anyone is welcome to contribute.
