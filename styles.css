@@ -1,0 +1,1143 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #ddd;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* Style the tab */
+.tab {
+    padding: 2px 15px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    border-radius: 8px;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 0px !important;  /* No rounded corners */
+  transition: 0.3s;
+  font-size: 15px;
+  background: #aaa !important;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd !important;;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc !important;;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+}
+
+.upgrade-controls {
+    display: flex;
+    align-items: center; /* Align vertically */
+    justify-content: space-between; /* Distribute space evenly */
+}
+
+.prestige-progress-bar {
+    display: flex; /* Use flexbox layout */
+    flex-grow: 1; /* Allow the progress bar to take up available space */
+    margin: 0 10px; /* Add some space around the progress bar */
+}
+
+.prestige-progress-bar div {
+    flex: 1; /* Allow each square to grow and take equal space */
+    height: 20px; /* Set a fixed height for the squares */
+    /* Additional styling for the squares (borders, margins, etc.) */
+}
+
+
+.upgrade-description {
+    font-size: 0.5em; /* Adjust font size as needed */
+    color: #555; /* Adjust color as needed */
+}
+
+.prestige-points-display {
+    color: #000;
+    background-color: #ADD8E6; /* Light blue background */
+    padding: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+#prestigeModal .prestige-button {
+    background: none;  /* Override background */
+    border: none;      /* Override border */
+    /* Add other styles to reset inherited properties */
+}
+
+
+.empty-square, .filled-square {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    margin-right: 2px;
+}
+
+.filled-square {
+    background-color: #00FFA6;
+}
+
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    padding: 10px; /* Add some padding for spacing */
+}
+
+.modal-footer button {
+    margin-left: 10px; /* Add space between the buttons */
+}
+
+
+#container {
+  position: absolute;
+  top: 40%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+}
+
+
+#mapcontainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  width: 1200px;
+  height: 1200px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  background-color: #ddd;
+}
+
+
+
+#cell {
+  fill: #888;
+}
+
+
+#tendon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  background: #aaa;
+  z-index: 3;
+}
+
+#menu button {
+  display: block;
+  margin: 4px 0;  /* Slightly reduced margin */
+  background: #888;
+  border: none;
+  border-radius: 10px;  /* Adding rounded corners */
+  padding: 4px 8px;  /* Slightly reduced padding */
+  cursor: pointer;
+  overflow: hidden; 
+}
+
+#menu button.researchButton {
+    display: inline-block; /* Make the button only as wide as its content */
+    margin: 5px 0; /* Adjust the margin if necessary */
+    padding: 5px; /* Adjust the padding if necessary */
+}
+
+#resourceBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #aaa;
+  padding: 7px;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 14px;
+  border-top: 1px solid #ccc;
+  height: 60px;
+  z-index: 10;
+}
+
+.resourceWrapper {
+    margin-right: 20px;
+}
+
+.flashEnergy { /* used for resource deduction visual cues */
+    color: red;
+    transition: color 0.5s;
+}
+
+
+#cycleProgressBarContainer {
+    float: left;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+#cycleProgressBar {
+    transition: width 0.5s;
+}
+
+
+.floatingEnergyCost { /* resource deduction visual cue, floating minus */
+    position: absolute;
+    bottom: 100%; /* Start just above the bottom of its relative parent */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%); /* Ensure it's centered */
+    opacity: 1;
+    font-size: 16px;
+    color: red;
+    transition: opacity 1.5s, bottom 1.5s; /* Fade out and move up over 1.5 seconds */
+    pointer-events: none; /* Make sure it doesn't block any clicks */
+    z-index: 10; /* Ensure it's above the other elements */
+    text-shadow: 1px 1px 0px black; /* Black text shadow for contrast */
+}
+
+.floatingTfGain { /* resource gain visual cue, floating plus */
+    position: absolute;
+    bottom: 50%; /* Start just at the bottom of its relative parent */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%); /* Ensure it's centered */
+    opacity: 1;
+    font-size: 16px;
+    color: #32CD32; /* Brighter green color */
+    transition: opacity 3.5s, bottom 3.5s; /* Slower fade out and move up over 3 seconds */
+    pointer-events: none; /* Make sure it doesn't block any clicks */
+    z-index: 10; /* Ensure it's above the other elements */
+    text-shadow: 1px 1px 0px black; /* Black text shadow for contrast */
+}
+
+
+
+/* Toggle Switch Container */
+#researchFilters {
+    display: inline-block;
+    position: relative;
+    width: 60px; /* Adjust as needed */
+    height: 17px; /* Adjust as needed */
+    background-color: #ccc;
+    border-radius: 34px;
+    cursor: pointer;
+    padding: 0 40px; /* Adjust as needed */
+    line-height: 17px; /* Matches the height of the toggle */
+}
+
+/* Style for labels */
+.toggleLabel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px; /* Adjust as needed */
+    transition: opacity 0.3s;
+}
+
+/* Position the "New" label to the left of the toggle */
+#researchFilters .toggleLabel.new {
+    left: 20px;
+    opacity: 1; /* Start with reduced opacity */
+}
+
+/* Position the "Completed" label to the right of the toggle */
+#researchFilters .toggleLabel.completed {
+    right: 20px;
+    opacity: 0.5; /* Start with full opacity */
+}
+
+/* When the toggle is active, adjust the opacities */
+#researchFilters.active .toggleLabel.new {
+    opacity: 0.5;
+}
+
+#researchFilters.active .toggleLabel.completed {
+    opacity: 1;
+}
+
+
+/* Toggle Switch Circle/Button */
+#researchFilters .toggleCircle {
+    position: absolute;
+    top: 1px; /* Adjust as needed */
+    left: 1px;
+    width: 15px; /* Adjust as needed */
+    height: 15px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+/* Toggle Active State */
+#researchFilters.active .toggleCircle {
+    left: calc(100% - 16px); /* Adjust as needed */
+}
+
+
+
+#story {
+    width: 70%;
+    height: 14vh;
+    position: absolute;
+    bottom: 62px;  
+    left: 10px;
+    padding: 20px;
+    background: #FAFAFA;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    overflow: auto;
+    font-size: 16px;
+    margin: 0.5em 0;  
+    color: #333;
+    z-index: 9;
+    resize: both; /* Allows resizing */
+    overflow: auto; /* Ensures content is scrollable if it exceeds div size */
+    min-width: 100px; /* Minimum width */
+    min-height: 70px; /* Minimum height */
+}
+
+
+/* Effect used during major story setbacks */
+.setbackEffect {
+    box-shadow: 0 0 50px rgba(255, 0, 0, 1); /* Increase the size of the shadow */
+    border: 3px solid #ff0000; /* Thicker red border */
+    background-color: rgba(255, 0, 0, 0.2); /* Light red background */
+    transition: box-shadow 1s, border 1s, background-color 1s ease; /* Increase the duration of the transition */
+}
+
+
+.new-text {
+    /* Newer text color */
+    color: #000; 
+}
+
+#viewButtons {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: none; /* Initially hidden */
+}
+
+
+
+#cell-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  background-color: #888;
+  border-radius: 50%;
+  border: 0.5px solid black;
+  transform: translate(-50%, -50%);
+  transition: top 1s, left 1s; 
+  z-index: 4; /* a higher z-index value to ensure we display above the map and fog-of-war */
+  animation: pulse 2s infinite; /* Add the pulse animation */
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+
+.fog-of-war {
+  fill: rgba(221, 221, 221, 0.9); /* Close to #ddd with 90% opacity */
+  pointer-events: none; /* makes it non-interactive, so it doesn't interfere with other elements */
+}
+
+#fog-of-war::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) 1px, transparent 1px, transparent 30px),
+        repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2) 1px, transparent 1px, transparent 30px);
+    z-index: 1;
+    pointer-events: none; /* Ensure that this overlay doesn't interfere with any interactions with the tiles underneath */
+}
+
+
+
+
+#main-terraform-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 0;  
+    padding: 0;
+}
+
+#info-widget, #anomaly-widget, #worker-assignment-widget {
+    padding: 5px;
+    width: 150px;
+    font-size: 0.7em;
+}
+
+#info-widget {
+    padding-right: 10px; /* add some padding to the right */
+}
+
+#anomaly-widget {
+    padding-left: 10px; /* add some padding to the left */
+}
+
+#anomaly-widget h3 {
+    border-bottom: 1px solid #000;
+    margin-bottom: 6px;
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+#anomaly-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#anomaly-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.anomaly-name {
+    flex-grow: 1;  /* Allow the text to take up available space */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 5px; /* Small space between text and progress bar */
+}
+
+.anomaly-progress {
+    width: 40px;
+    vertical-align: middle;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
+#analyze-all-anomalies {
+    padding: 3px 8px;
+    font-size: 0.7em;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+}
+
+
+
+#info-widget h3, #worker-assignment-widget h3 {
+    border-bottom: 1px solid #000;
+    margin-bottom: 6px;
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+
+#worker-assignment-widget button {
+    padding: 5px 10px;  /* Adjust as needed for the desired size */
+    font-size: 0.8em;  /* Adjust as needed for the desired font size */
+    background-color: #f9f9f9;  /* Adjust to match your game's styling */
+    border: 1px solid #ccc;  /* Adjust to match your game's styling */
+    cursor: pointer;  /* Makes it clear it's clickable */
+    margin-left: 5px;  /* Adds some spacing between the buttons */
+}
+
+.worker-assignment-row {
+    display: flex;
+    align-items: center;  /* Vertically center-aligns the content */
+    justify-content: space-between;  /* Horizontally aligns the content on opposite ends */
+}
+
+
+
+#terrain-list {
+    list-style-type: none;  /* This removes the bullet points */
+    padding-left: 0;        /* This removes the default padding of the list */
+}
+
+#terrain-list li {
+    margin-bottom: 2px;
+}
+
+/* Add this to align the widgets side by side */
+#Terraform {
+    display: flex;
+    flex-wrap: wrap;  /* Allows items to wrap to the next line if needed */
+    width: 100%;  /* Takes the full available width */
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content button {
+    margin: 10px;
+}
+
+
+.researchButton {
+    position: relative;
+    overflow: hidden; /* Ensures that the progress bar doesn't spill out of the button */
+    z-index: 1;
+}
+
+.progressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%; /* Initially no progress */
+    height: 100%; /* Full height of the button */
+    background-color: rgba(0, 255, 0, 0.2); /* Light green background */
+    z-index: -1; /* Place it behind the button text */
+}
+
+
+progress {
+    color: #4169E1; /* Royal Blue */
+    background: lightgrey;
+    border: 1px solid #424242; /* subtle border */
+    border-radius: 10px; /* rounded corners */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* inset shadow for 3D effect */
+    transition: background-color 0.3s, color 0.3s; /* smooth color transition */
+    height: 8px;
+}
+
+progress::-moz-progress-bar {
+    background: currentColor;
+    border-radius: 9px; /* keeping it slightly less than container for a better effect */
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1); /* subtle shadow inside the progress fill */
+}
+
+progress::-webkit-progress-bar {
+    background: lightgrey;
+    border-radius: 10px; /* rounded corners */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* inset shadow for 3D effect */
+}
+
+progress::-webkit-progress-value {
+    background: currentColor;
+    border-radius: 9px; /* keep it slightly less than container for a better effect */
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1); /* subtle shadow inside the progress fill */
+}
+
+progress.completed {
+    color: #33FF00; /* Harlequin Green, felt like making it funky. Probably a bit much. */
+}
+
+
+.researchButton span {
+    position: relative;
+    z-index: 2; /* This ensures the text is above the progress bar */
+}
+
+/* styling for terraform buttons */
+.terraformButton {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.terraformButton .progressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%; /* Initially no progress */
+    height: 100%; /* Full height of the button */
+    background-color: rgba(0, 255, 0, 0.2); /* Light green background */
+    z-index: -1; /* Place it behind the button text */
+}
+
+.terraformButton span {
+    position: relative;
+    z-index: 2; /* This ensures the text is above the progress bar */
+}
+
+
+.flashUpdate {
+    animation: flashGreenish 2.5s; /* Half a second animation for the flash effect */
+}
+
+@keyframes flashGreenish {
+    from { color: #006400; } /* Dark green at the start of the flash */
+    to { color: inherit; }  /* Return to the original color at the end of the flash */
+}
+
+
+
+.tooltip {
+    display: block;
+    position: relative;
+    margin-bottom: 0px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 250px;
+    background-color: #f1f1f1;  /* Match the achievement tooltip background color */
+    color: #333;  /* Adjusted text color for readability */
+    text-align: left;
+    border: 1px solid #ccc;  /* Match the achievement tooltip border */
+    border-radius: 0px;
+    padding: 5px 5px 5px 10px; 
+    position: absolute;
+    z-index: 1001;  /* Made consistent with achievement tooltip z-index */
+    opacity: 0;
+    transition: opacity 0.3s;
+    top: 30px;  /* Offset from the top edge of the button */
+    left: 100%;  /* Positioning on the right side of the button */
+    margin-left: 30px;  /* Added spacing to the left */
+    pointer-events: none;
+    font-size: 0.8em;
+}
+
+.tooltip .tooltiptext strong {
+    font-size: 1.2em;
+    display: block;
+}
+
+.tooltip:hover .tooltiptext {
+    opacity: 1;
+}
+
+
+.achievementTooltip .tooltiptext {
+    left: auto;          /* Remove the left positioning */
+    right: 100%;         /* Position it to the left of the parent */
+    margin-left: 0;      /* Reset the margin */
+    margin-right: 20px;  /* Add some spacing to the left */
+    border: 1px #888; /* temporary to help locate/troubleshoot tooltips */
+    z-index: 1001;
+}
+
+
+#achievementsContainer {
+    position: relative;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    width: 100%;
+}
+
+#achievementsIcon {
+    background-color: #f1f1f1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#achievementsIcon:hover {
+    background-color: #ddd;
+    top: 0;
+    right: 0;
+}
+
+@keyframes shine {
+  0% {
+    background: #f1f1f1;
+  }
+  50% {
+    background: #f7edba; /* Soft white/gold color */
+  }
+  100% {
+    background: #f1f1f1;
+  }
+}
+
+.shine {
+  animation: shine 3s ease 5; /* Increased duration to 2s for a slower pulse */
+}
+
+
+#achievementsPanel {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 7px;
+    position: absolute;
+    gap: 1px;  /* Adjust the gap between achievements */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    top: 42px;
+    right: 0;
+    width: 160px; /* Width can be adjusted based on your design */
+}
+
+.achievement {
+    width: 30px; /* Size can be adjusted based on your design */
+    height: 30px;
+    border: 1px solid #aaa;
+}
+
+.achievement.unlocked {
+    background-color: #4CAF50; /* Placeholder color for unlocked achievements */
+}
+
+.achievement.locked {
+    background-color: #ddd; /* Placeholder color for locked achievements */
+}
+
+.achievementWrapper:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    z-index: 1000;
+}
+
+
+#compass {
+    position: fixed;
+    bottom: 85px;
+    right: 75px;
+    width: 110px;
+    height: 110px;
+    border: 3px solid black;
+    border-radius: 50%;
+    background-color: darkgrey;
+    box-shadow: inset 0 0 0 1px #fff; /* Inner border with a lighter shade */
+    display: block;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    display: none; /* initially hidden, only shows on MAP view */
+    transform: scale(1.2); /* slightly increased in size */
+}
+
+.direction {
+    position: absolute;
+    width: 12px;
+    height: 35px;
+    background-color: black; /* Changing the color to dark grey */
+    cursor: pointer;
+    transform-origin: center bottom;
+}
+
+#north {
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-origin: center bottom;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+#east {
+    right: 20px;
+    top: 44%;
+    transform: translateY(-50%) rotateZ(90deg);
+    transform-origin: center left;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+#south {
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%) rotateX(180deg);
+    transform-origin: center top;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+#west {
+    left: 20px;
+    top: 44%;
+    transform: translateY(-50%) rotateZ(-90deg);
+    transform-origin: center right;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.center-circle {
+    position: relative  ;
+    width: 18px;
+    height: 18px;
+    background-color: darkgrey;
+    border-radius: 41%;
+    top: 8%;
+    left: 8%;
+    transform: translate(-50%, -50%);
+}
+
+.center-circle::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.direction:hover {
+    background-color: red;
+}
+
+
+.flagellar-thrust {
+    position: fixed;
+    bottom: 75px;
+    right: 15px;
+    padding: 10px 20px;
+    background-color: darkgrey;
+    border: 3px solid black;
+    border-radius: 10px;
+    display: none; /* initially hidden, only shows on MAP view */
+}
+
+
+
+@keyframes fillAnimation { /* Used for e.g. Echo Chamber fill effect */
+  from {
+    fill-opacity: 0;
+  }
+  to {
+    fill-opacity: 1;
+  }
+}
+
+.echoChamberFill {
+  animation-name: fillAnimation;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+}
+
+
+
+/* styling for division button */
+#divisionButton {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#divisionButton .progressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%; /* Initially no progress */
+    height: 100%; /* Full height of the button */
+    background-color: rgba(0, 0, 255, 0.2); /* Light blue background */
+    z-index: -1; /* Place it behind the button text */
+}
+
+#divisionButton span {
+    position: relative;
+    z-index: 2; /* This ensures the text is above the progress bar */
+}
+
+
+
+#toast {
+  position: fixed;
+  bottom: 70px; /* Just above the #resourceBar */
+  right: 20px;
+  background: #666;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hidden {
+  display: none;
+}
+
+
+#caveCanvas {
+  margin: auto;
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  image-rendering: pixelated;
+}
+
+#worldCanvas {
+  margin: auto;
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  image-rendering: pixelated;
+}
+
+#backgroundCanvas {
+    position: absolute;
+    z-index: 1;
+}
+
+#cloud1Canvas, #cloud2Canvas, #wavesCanvas {
+    position: absolute;
+    z-index: 2; /* Higher than background */
+}
+
+
+.subtablinks {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  margin: 0 5px;
+  transition: opacity 0.3s;
+}
+
+.subtablinks:hover {
+  opacity: 0.7;
+}
+
+
+.subtab {
+  display: flex; /* This will ensure that child elements are laid out in a row */
+  width: 100%; /* Take full width available */
+}
+
+.subtabcontent {
+  display: none;
+  margin-left: 10px; /* Add some spacing between the subtab buttons and the content */
+  flex: 1; /* Take up any remaining space after the subtab buttons */
+}
+
+.solarabutton {
+  cursor: pointer;
+  transition: background-color 0.3s !important;
+  display: flex !important;         /* Turn the button into a flex container */
+  flex-direction: column;
+  justify-content: center !important; /* Center the content horizontally */
+  align-items: center !important;   /* Center the content vertically */
+  font-size: 0.7em !important;
+  position: relative;  /* Added this line */
+  overflow: hidden;  
+}
+
+
+
+.solarabutton:hover {
+  background-color: #e0e0e0;
+}
+
+.solaraTab1-content {
+    display: flex;
+}
+
+.sacrifice-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    align-items: stretch;
+    font-size: 0.9em;
+}
+
+.sacrifice-column h3 {
+    text-align: center;
+    margin-bottom: 2px;
+    font-size: 0.9em;
+}
+
+.sacrifice-column button {
+    font-size: 0.7em;
+    margin: 1px 0 !important;       /* Resets margin */
+    padding: 5px !important;    /* Adjust padding as you see fit */
+    line-height: 1 !important;  /* Adjusts the line-height */
+    z-index: 2;  /* This will ensure the button and its text are above the progress bar */
+}
+
+#sacrificePool {
+    width: 200px;
+    height: 220px;
+    border: 1px solid black;
+    margin-left: 20px; /* spacing from the sacrifice column */
+}
+
+.sacrificeProgressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%; /* Initially no progress */
+    height: 100%; /* Explicitly setting the height */
+    background-color: rgba(255, 0, 0, 0.6); /* Blood red */
+    z-index: 1; /* Place it above the button text */
+}
+
+.sacrificeButtonTextContent {
+  position: relative;
+  z-index: 3;  
+}
+
+.solaraInfo {
+  content: "";
+  padding-right: 19px;
+  padding-top: 2px;
+  clear: both;
+  font-size: 0.5em !important;
+}
+
+.action-name {
+  display: block !important;
+}
+
+.action-cost {
+  display: block !important;
+  font-size: 0.8em;
+}
+
+
+
+#ritualAltar {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.glyph, .solaraGlyph {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  line-height: 50px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  background-color: #aaa;  /* initial background color */
+  transition: background-color 1s ease; /* transition effect */
+}
+
+@keyframes slosh {
+  0% {
+    background-position: 0% 50%;
+    background-size: 100% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+    background-size: 120% 120%;
+  }
+  100% {
+    background-position: 0% 50%;
+    background-size: 100% 100%;
+  }
+}
+
+/* Apply the keyframe animation to the Solara glyph */
+.solaraGlyph {
+  left: 45%;
+  top: 50%;
+  background: linear-gradient(to top, #9ae6aa, #aaa);
+  animation: slosh 5s ease-in-out infinite;
+  transition: background 1s ease-in-out;
+}
+
+.activeGlyph {
+  background-color: #ffa07a;
+}
+
+/* You will need to fine-tune these positions */
+#cellGlyph { top: 7%; left: 45%; }  
+#nourishmentGlyph { top: 20%; left: 15%; } 
+#warmthGlyph { top: 80%; left: 15%; } 
+#energyGlyph { top: 50%; left: 85%; }
+#biomitesGlyph { top: 20%; left: 75%; }
+#zymersGlyph { top: 80%; left: 75%; } 
+#fibersGlyph { top: 50%; left: 5%; } 
+#sludgeGlyph { top: 93%; left: 45%; } 
+
+.conversionButtonText {
+    position: relative; 
+    z-index: 2;  /* Higher than the progress bar */
+}
+
+.conversionProgressBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%; /* Initially no progress */
+    height: 100%; /* Full height of the button */
+    background-color: rgba(0, 255, 0, 0.2); /* Light green background */
+    z-index: 1; /* Place it behind the button text */
+}
+
+
+#versionAndPatreon {
+    position: absolute;
+    right: 10px; /* Distance from the right edge */
+    bottom: 10px; /* Distance from the bottom edge */
+    text-align: right;
+}
+
+#versionAndPatreon a {
+    margin-left: 10px; /* Spacing between version text and Patreon link */
+    color: #004b9c; /* Blue color for the link */
+    text-decoration: none; /* Optional: Removes underline from the link */
+}
+
+#versionAndPatreon a:hover {
+    text-decoration: underline; /* Optional: Adds underline on hover for the link */
+}

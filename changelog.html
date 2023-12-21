@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://devjon.com/amino/img/solara.ico" type="image/x-icon">
+    <title>Amino Idle Changelog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Google Font -->
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Prevent scrollbars */
+            font-family: 'Roboto', sans-serif; /* Apply Google Font */
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .game-description {
+            font-size: 14px; /* Smaller text for description */
+            margin-top: 20px;
+        }
+        .changelog {
+            position: absolute;
+            top: 8%;
+            left: 50%;
+            max-width: 600px; /* Adjust as needed */
+            margin: 20px auto; /* Centered on the page */
+            padding: 15px;
+            transform: translateX(-50%); /* Only horizontally center */
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            border: 2px solid black;
+            border-radius: 10px; /* Smooth/curved border */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+            text-align: left;
+            color: #fff; /* White text */
+            max-height: 80vh; /* Maximum height, adjust as needed */
+            overflow-y: auto; /* Only vertical scrollbar when needed */
+        }
+
+        .changelog h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .changelog ul {
+            list-style-type: disc; /* Bullet points */
+            padding-left: 20px; /* Indent list items */
+        }
+
+        /* Style for the scrollbar track */
+        .changelog::-webkit-scrollbar-track {
+            background-color: #f1f1f1; /* Light gray track */
+        }
+
+        /* Style for the scrollbar handle */
+        .changelog::-webkit-scrollbar-thumb {
+            background-color: #888; /* Darker gray handle */
+            border-radius: 10px; /* Rounded corners for the handle */
+        }
+
+        /* Handle hover effect */
+        .changelog::-webkit-scrollbar-thumb:hover {
+            background-color: #555; /* Darker color on hover */
+        }
+
+        .changelog::-webkit-scrollbar {
+            width: 10px; /* Scrollbar width */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="mainCanvas"></canvas>
+    <div class="changelog">
+        <h1>v0.16 (Dec XX, 2023)</h1>
+        <ul>
+            <li>Added offline progress</li>
+            <li>Bugfix: River anomaly sometimes clashed with other map anomalies</li>
+            <li>Note: to the person who made a chinese translation for g8hh.com, thank you. I really appreciate your help reaching more of the world. 我们对您的支持表示衷心的感谢.</li>
+        </ul>
+        <br><br>
+        <h1>v0.15 (Dec 12th, 2023)</h1>
+        <ul>
+            <li>More performance improvements [Cell & Cave].</li>
+            <li>Added tooltips to solara upgrades.</li>
+            <li>Added tooltips to protozoid evolutions.</li>
+            <li>Added tooltips to endosymbiotic evolutions.</li>
+            <li>Added visual feedback effect for TF resource gains.</li>
+            <li>Added information popup for soul mechanics.</li>
+            <li>Fog-of-war color now adjusts along with the background slider.</li>
+            <li>New Content: Protozoid evolutions available through solara upgrades.</li>
+            <li>New Content: Protopod [Evolution].</li>
+            <li>New Content: Protoworm [Evolution].</li>
+            <li>New Content: Fringe Dweller [Research & Cave Mechanic]</li>
+            <li>New Content: Vision Glyph upon Solara Sacrifice Canvas Completion.</li>
+            <li>New Content: Primordial Sight [Research].</li>
+            <li>New Content: Salt flats anomaly [Exploration].</li>
+            <li>New Content: Cryohaline Excavation [Research]</li>
+            <li>New Content: World View [Game mechanic].</li>
+            <li>New Content: Prestige System.</li>
+            <li>New Content: Mini-nucleus [Prestige Upgrade]</li>
+            <li>New Content: Mini-tendon [Prestige Upgrade]</li>
+            <li>Bugfix: Story queue sometimes failed to process.</li>
+            <li>Bugfix: Solara tutorial modal not showing at the right moment.</li>
+            <li>Bugfix: Added solara point calculation guardrails upon completing sacrifice canvas.</li>
+            <li>Bugfix: Protopod crawl animation limb drift.</li>
+            <li>Bugfix: Visual feedback sometimes triggered when not required.</li>
+            <li>Bugfix: Diggers sometimes ventured outside of the cave canvas.</li>
+            <li>Bugfix: Resource conversion increases from anomaly studies not taking effect.</li>
+        </ul>
+        <br><br>
+        <h1>v0.14 (Nov 29th, 2023)</h1>
+        <ul>
+            <li>Performance optimization to cave mechanics.</li>
+            <li>Performance optimization to cell view.</li>
+            <li>Added scroll-to-zoom in cave view.</li>
+            <li>Added website icon.</li>
+            <li>Slightly nerved thermal vents.</li>
+            <li>New Content: Chemotactic Exploration [Research]</li>
+            <li>Bugfix: Added rounding to zoom in/out functionalities.</li>
+            <li>Bugfix: Improved logic for anomaly progress bars.</li>
+        </ul>
+        <br><br>
+        <h1>v0.13 (Nov 22th, 2023)</h1>
+        <ul>
+            <li>Changed cave image-render style to pixelated.</li>
+            <li>Slightly increased compass size.</li>
+            <li>Bugfix: Fungi sometimes did not spawn.</li>
+            <li>Bugfix: Tendon re-grow now available immediately after exploration setback event.</li>
+            <li>Bugfix: echoLocation (cave mechanic) performance optimized.</li>
+            <li>Bugfix: lastOccupiedPixelInRow (solara mechanic) now periodically validated for accuracy.</li>
+            <li>Bugfix: fixed resource bar format loss for TF resource sacrifices.</li>
+            <li>Bugfix: cell dragging became increasingly jumpy upon on loading savegames.</li>
+            <li>Bugfix: terraform resource display format loss when decremented by sacrifice.</li>
+        </ul>
+        <br><br>
+        <h1>v0.12 (Nov 21th, 2023)</h1>
+        <ul>
+            <li>Added terraform tooltips.</li>
+            <li>Research project progress now saves/loads instead of resetting.</li>
+            <li>Story div now draggable and can be resized.</li>
+            <li>Background color now persists upon refresh/save game load.</li>
+            <li>Added a slight delay to soul choice popup choices enabling, to avoid accidental clicks.</li>
+            <li>Bugfix: fog-of-war sometimes not revealing map upon moving caused by duplicate fog divs.</li>
+            <li>Bugfix: terraform resources display format loss when decremented by research projects.</li>
+            <li>Bugfix: canSpawn was sometimes loaded as false, disabling cave excavation permanently.</li>
+        </ul>
+        <br><br>
+        <h1>v0.11 (Nov 17th, 2023)</h1>
+        <ul>
+            <li>Enabled map exploration via arrow keys for improved navigation.</li>
+            <li>Implemented a bugfix to prevent cave diggers from malfunctioning when warmth is at zero.</li>
+            <li>Adjusted the game mechanics to make fibers more accessible through microbial mounts, albeit in small quantities.</li>
+        </ul>
+        <br><br>
+        <h1>v0.1 (Nov 16th, 2023)</h2>
+        <p>Initial public release.</p>
+    </div>
+    <script src="sparklytetris.js"></script>
+</body>
+</html>

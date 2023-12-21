@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevJon</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Google Font -->
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #0d2b51;
+    font-family: 'Roboto', sans-serif; /* Roboto font */
+  }
+  .image-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-left: 2px solid #000;
+    border-right: 2px solid #000;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .background-image {
+    background-image: url('img/amw_optimized.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .content-block {
+    background-color: rgba(13, 43, 81, 0.7); /* darker semi-transparent background */
+    border-radius: 10px;
+    border: 3px solid #000;
+    padding: 20px;
+    color: #fff;
+    width: 50%;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<div class="image-container">
+  <div class="background-image"></div>
+  <div class="content-block">
+    <h1>DevJon</h1>
+    <p>Hey, welcome! I make some things. Let me show you!</p>
+  </div>
+</div>
+
+</body>
+</html>

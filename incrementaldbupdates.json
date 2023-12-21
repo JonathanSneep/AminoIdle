@@ -1,0 +1,14 @@
+{
+  "updates": [
+    {
+      "version": "0.1.5",
+      "title": "v0.15 update",
+      "content": "Lots of new content in the early and mid-game phases. Full release notes at https://devjon.com/amino/changelog.html"
+    },
+    {
+      "version": "0.1.0",
+      "title": "Initial release",
+      "content": "This was the first release of the game"
+    }
+  ]
+}

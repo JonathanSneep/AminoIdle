@@ -1,0 +1,285 @@
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Amino Idle</title>
+    <link rel="icon" href="https://devjon.com/amino/img/solara.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+  </head>
+  <body>
+    <div id="viewButtons">
+      <button id="cellViewButton" onclick="switchView('cell')">Cell View</button>
+      <button id="discoveryViewButton" onclick="switchView('discovery')" disabled>Discovery View</button>
+      <br> <!-- Line break to move the next button down -->
+      <button id="caveViewButton" onclick="switchView('cave')" disabled style="display: none;">Cave View</button>
+    </div>
+      <div id="mapcontainer">
+        <div id="map" style="display: none;">
+        </div>
+      </div>
+      <div id="worldcontainer">
+        <div id="world" style="display: none;">
+          <canvas id="backgroundCanvas" width="1200" height="686"></canvas>
+          <canvas id="cloud1Canvas" width="1200" height="686"></canvas>
+          <canvas id="cloud2Canvas" width="1200" height="686"></canvas>
+          <canvas id="wavesCanvas" width="1200" height="686"></canvas>
+        </div>
+      </div>
+      <div id="cavecontainer">
+        <div id="cave" style="display: none;">
+          <canvas id="caveCanvas" width="1000" height="1000"></canvas>
+        </div>
+      </div>
+    <div id="container">
+    <svg id="tendon" width="800" height="800" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid meet" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+      <defs>
+    <filter id="glowWiggle" x="-50%" y="-50%" width="200%" height="200%">
+        <!-- Glow filter primitives -->
+        <feGaussianBlur in="SourceGraphic" stdDeviation="0" result="blur" id="blurFilter"/>
+        <feFlood id="floodColor" flood-color="orange" result="floodColor"/>
+        <feComposite in="floodColor" in2="blur" operator="in" result="coloredBlur"/>
+        <feMerge result="glow">
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+        <!-- Wiggle filter primitives -->
+        <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0" numOctaves="1" seed="1"/>
+        <feDisplacementMap in="glow" in2="turbulence" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="wiggleOnly" x="-50%" y="-50%" width="200%" height="200%">
+        <!-- Wiggle filter primitives -->
+        <feTurbulence id="wiggleOnlyTurbulence" type="fractalNoise" baseFrequency="0.1" numOctaves="1" seed="1"/>
+        <feDisplacementMap in="SourceGraphic" in2="wiggleOnlyTurbulence" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+      </defs>
+      <g id="cellGroup">
+        <circle id="cell" cx="400" cy="400" r="25" fill="#888" /></circle >
+      </g>
+    </svg>
+    </div>
+    <div id="menu">
+      <div class="tab">
+        <div class="tab-row">
+          <button class="tablinks" onclick="openTab(event, 'Actions')">Actions</button>
+          <button class="tablinks" onclick="openTab(event, 'Evolution')">Evolution</button>
+          <button class="tablinks" id="researchTabButton" onclick="openTab(event, 'Research')" style="display: none;">Research</button>
+          <button class="tablinks" id="terraformTabButton" onclick="openTab(event, 'Terraform')" style="display: none;">Terraform</button>
+          <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>
+        </div>
+        <div class="tab-row" id="secondTabRow" style="display: none;">
+          <button class="tablinks" id="soulTabButton" onclick="openTab(event, 'Soul')">Soul</button>
+          <button class="tablinks" id="solaraTabButton" onclick="openTab(event, 'Solara')" style="display: none;">Solara</button>
+        </div>
+      </div>
+      <div id="Actions" class="tabcontent">
+        <button id="wiggleButton">Wiggle</button>
+        <button id="tendonButton" style="display: none;">Grow Tendon</button><br>
+        <button id="senseButton" style="display: none;">Sense</button>
+        <button id="glowButton" style="display: none;">Glow</button>
+        <button id="grabButton" style="display: none;">Grab</button>
+        <button id="echoButton" style="display: none;">Echo</button>
+        <br>
+        <div id="resourceConverter" style="display: none;">
+            <select id="fromResourceDropdown" style="display: inline-block;">
+                <option value="nourishment">Nourishment</option>
+                <option value="information">Information</option>
+                <option value="warmth">Warmth</option>
+                <option value="energy">Energy</option>
+            </select>
+            <input type="number" id="amountToConvert" style="width: 55px; display: inline-block;" placeholder="0" onchange="validateResourceConversionAmount(this)">
+            <select id="toResourceDropdown" style="display: inline-block;">
+                <option value="nourishment">Nourishment</option>
+                <option value="information">Information</option>
+                <option value="warmth">Warmth</option>
+                <option value="energy">Energy</option>
+            </select>
+            <button id="convertResourceButton" style="display: inline-block; position: relative;">
+                <span class="conversionButtonText">Convert</span>
+                <div class="conversionProgressBar"></div>
+            </button>
+        </div>
+      </div>
+      <div id="Evolution" class="tabcontent" style="display: none;">
+        <!-- Minor Cell Evolutions -->
+        <div><button id="sensorsButton" style="display: none;">Sensors (cost: 50n 10i)</button></div>
+        <div><button id="radiatorsButton" style="display: none;">Radiators (cost: 100n 50i 20w)</button></div>
+        <div><button id="mitochondriaButton" style="display: none;">Mitochondria (cost: 1750n 100i 750w)</button></div>
+        <div><button id="membraneButton" style="display: none;">Membrane Thickness (cost: 200n 40i)</button></div>
+        <div><button id="nucleusButton" style="display: none;">Nucleus (cost: 600n 100i 200w)</button></div>
+        <div><button id="endoplasmicButton" style="display: none;">Endoplasmic Reticulum (cost: 1250n 250i 500w)</button></div>
+        <div><button id="spikesButton" style="display: none;">Spikes (cost: 1250n 100i 1750w)</button></div>
+        <div><button id="suctionCupsButton" style="display: none;">Suction Cups (cost: 1750n 100i 750w)</button></div>
+        <div><button id="featheredAntennaButton" style="display: none;">Feathered Antenna (cost: 1750n 100i 750w)</button></div>
+        <div><button id="monotrichousFlagellaButton" style="display: none;">Monotrichous Flagella (cost: 7500n 750i 1250w 2500e)</button></div>
+        <div><button id="lophotrichousFlagellaButton" style="display: none;">Lophotrichous Flagella (cost: 15,000n 15,000e)</button></div>
+        <div><button id="echoChamberButton" style="display: none;">Echo Chamber (cost: 3000n 650i 1500w 10Ke)</button></div>
+        <div><button id="resonanceTendrilsButton" style="display: none;">Resonance Tendrils (cost: 4000n 650i 1750w 400e)</button></div>
+        <div><button id="sensoryPularsButton" style="display: none;">Sensory Pulsars (cost: 5000n 650i 2000w 500e)</button></div>
+        <!-- Major Cell Evolutions -->
+        <div><button id="protowormEvolution" style="display: none;">Evolve to ProtoWorm</button></div>
+        <div><button id="protopodEvolution" style="display: none;">Evolve to ProtoPod</button></div>
+        <div><button id="protocystEvolution" style="display: none;">Evolve to ProtoCyst</button></div>
+        <div><button id="protogradeEvolution" style="display: none;">Evolve to ProtoGrade</button></div>
+        <!-- Worker Cell Evolutions -->
+        <div><button id="synapticGlacialisEvolution" style="display: none;">Synaptic Glacialis (cost: 20,000b 50,000z)</button></div>
+        <div><button id="calorimetricGranulumEvolution" style="display: none;">Calorimetric Granulum (cost: 35,000s, 10,000a)</button></div>
+      </div>
+      <div id="Research" class="tabcontent" style="display: none;">
+          <div id="researchFilters" onclick="toggleResearchFilter()">
+              <span class="toggleLabel new">New</span>
+              <div class="toggleCircle"></div>
+              <span class="toggleLabel completed">Completed</span>
+          </div>
+          <!-- This is where other research options will dynamically appear -->
+      </div>
+      <div id="Terraform" class="tabcontent" style="display: none;">
+          <div id="main-terraform-container">
+              <div id="info-widget">
+                  <h3>Explored Terrains</h3>
+                  <ul id="terrain-list">
+                      <!-- Terrain data will be dynamically populated here -->
+                  </ul>
+                  <p><strong>Cells available:</strong> <span id="available-cells">0</span></p> <!-- This will be updated dynamically -->
+              </div>
+              <div id="anomaly-widget">
+                  <h3>Anomalies</h3>
+                  <ul id="anomaly-list">
+                      <!-- Anomaly data will be dynamically populated here -->
+                  </ul>
+                  <button id="analyze-all-anomalies">Analyze Anomalies</button>
+              </div>
+          </div>
+          <div id="worker-assignment-widget" style="display: none;"> <!-- Initially hidden -->
+              <h3>Worker Assignment</h3>
+              <!-- Worker assignment rows will be dynamically populated here -->
+          </div>
+          <!-- This is where our terraform options will dynamically appear -->
+          <br>
+      </div>
+      <div id="Settings" class="tabcontent">
+        <button id="save">Save Game</button>
+        <button id="reset">Reset Game</button>
+        <button id="zoomIn">Zoom In</button>
+        <button id="zoomOut">Zoom Out</button>
+        <button id="zoomReset">Zoom Reset</button>
+        <button id="resetTutorials">Reset Tutorials</button>
+        <button id="prestigeOptions">Prestige Options</button>
+        <div id="prestigeModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <!-- Prestige Points Display -->
+                <div id="availablePrestigePoints" class="prestige-points-display">
+                    Available Prestige Points: <span id="prestigePointCount">0</span>
+                </div>
+                <!-- Mini-Nucleus Upgrade Section -->
+                <div id="miniNucleusUpgrade">
+                    <p>Mini-Nucleus</p>
+                    <p class="upgrade-description">A small nucleus remains with you throughout resets. Each level provides +0.02i and +0.02w per tick.</p>
+                    <div class="upgrade-controls">
+                        <button class="prestige-button" data-upgrade="miniNucleus-minus" onclick="unassignPoint('miniNucleus')">-</button>
+                        <div class="prestige-progress-bar">
+                            <!-- These will be filled dynamically -->
+                        </div>
+                        <button class="prestige-button" onclick="assignPoint('miniNucleus')">+</button>
+                    </div>
+                </div>
+                <!-- Mini-Tendon Upgrade Section -->
+                <div id="miniTendonUpgrade">
+                    <p>Mini-Tendon</p>
+                    <p class="upgrade-description">A small tendon remains with you throughout resets. Each level provides +0.02n and +0.02e per tick.</p>
+                    <div class="upgrade-controls">
+                        <button class="prestige-button" data-upgrade="miniTendon-minus" onclick="unassignPoint('miniTendon')">-</button>
+                        <div class="prestige-progress-bar">
+                            <!-- These will be filled dynamically -->
+                        </div>
+                        <button class="prestige-button" onclick="assignPoint('miniTendon')">+</button>
+                    </div>
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button class="prestige-button" id="prestigeNow">Prestige Now</button>
+                    <button class="prestige-button" id="abortPrestige">Abort</button>
+                    <button class="prestige-button" id="wipePrestige">Wipe Prestige</button>
+                </div>
+            </div>
+        </div>
+        <div class="setting">
+          <label for="bgSlider">Background Brightness:</label>
+          <input type="range" min="0" max="100" value="50" class="slider" id="bgSlider">
+        </div>
+      </div>
+      <div id="Soul" class="tabcontent" style="display: none;">
+        <!-- Soul attributes will be dynamically populated here -->
+      </div>
+      <div id="Solara" class="tabcontent" style="display: none;">
+        <!-- Solara tab items will be dynamically populated here -->
+      </div>
+    </div>
+    <div id="resourceBar">
+        <div id="resourcesDisplay">
+            <span class="resourceWrapper">Nourishment: <span id="nourishmentCounter">0</span></span>
+            <span class="resourceWrapper">Information: <span id="informationCounter">0</span></span>
+            <span class="resourceWrapper">Warmth: <span id="warmthCounter">0</span></span>
+            <span class="resourceWrapper">Energy: <span id="energyCounter">0</span></span>
+        </div>
+        <div id="terraformResourcesDisplay" style="display: none;">
+            <div id="cycleProgressBarContainer" style="display: none; width: 5%; background: #ccc; margin-right: 10px;">
+              <div id="cycleProgressBar" style="height: 15px; width: 0%; background: #66bb6a;"></div>
+            </div>
+            <span class="resourceWrapper">Biomites: <span id="biomitesCounter">0</span></span>
+            <span class="resourceWrapper">Zymers: <span id="zymersCounter">0</span></span>
+            <span class="resourceWrapper">Fibers: <span id="fibersCounter">0</span></span>
+            <span class="resourceWrapper">Sludge: <span id="sludgeCounter">0</span></span>
+            <span class="resourceWrapper">Algae: <span id="algaeCounter">0</span></span>
+        </div>
+        <div id="explorationDisplay" style="display: none;">
+            <span class="resourceWrapper">World Discovery: <span id="explorationPercentageDisplay">0%</span></span>
+        </div>
+        <div id="versionAndPatreon">
+          <a href="https://devjon.com/amino/changelog.html" target="_blank">v0.15</a>
+          <a href="https://www.patreon.com/AminoIdle" target="_blank">Support on Patreon</a>
+        </div>
+    </div>
+    <div id="toast" class="hidden">
+        Game Saved
+    </div>
+    <div id="story"></div>
+    <button id="unhideStory" style="display:none;">Unhide</button>
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.8.30/build/Tone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <script src="classes.js"></script>
+    <script src="config.js"></script>
+    <script src="story.js"></script>
+    <script src="evolution.js"></script>
+    <script src="achievement.js"></script>
+    <script src="exploration.js"></script>
+    <script src="cave.js"></script>
+    <script src="soul.js"></script>
+    <script src="research.js"></script>
+    <script src="terraform.js"></script>
+    <script src="solara.js"></script>
+    <script src="vision.js"></script>
+    <script src="script.js"></script>
+    <script src="prestige.js"></script>
+    <script src="save_load.js"></script>
+    <div id="confirmationModal" class="modal">
+      <div class="modal-content">
+          <p>Choosing this evolution significantly affects the course of the story and will lock you out of other potential evolutions. Are you sure you wish to proceed?</p>
+          <button id="confirmEvolution">Yes, Evolve</button>
+          <button id="cancelEvolution">No, Wait</button>
+      </div>
+    </div>
+    <div id="achievementsContainer">
+        <button id="achievementsIcon" onclick="toggleAchievementsPanel()">Achievements</button>
+        <div id="achievementsPanel" style="display: none;">
+            <!-- This will be dynamically populated with achievements using JavaScript -->
+        </div>
+    </div>
+    <div id="compass">
+      <div class="direction" id="north"></div>
+      <div class="direction" id="east"></div>
+      <div class="direction" id="south"></div>
+      <div class="direction" id="west"></div>
+      <div class="center-circle"></div>
+    </div>
+  </body>
+  </html>

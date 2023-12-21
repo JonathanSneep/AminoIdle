@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevJon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Google Font -->
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Roboto', sans-serif; /* Apply Google Font */
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .text-block {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the div */
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            border: 2px solid black;
+            border-radius: 10px; /* Smooth/curved border */
+            padding: 20px;
+            width: 50%; /* Adjust as needed */
+            text-align: center;
+            color: #fff; /* White text */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6); /* Subtle shadow effect */
+        }
+        @media screen and (max-width: 600px) {
+            .text-block {
+                top: 10%; /* Adjust this value as needed for mobile */
+                transform: translateX(-50%); /* Only horizontally center */
+            }
+        }
+        .text-block h1, .text-block p {
+            text-shadow: 1px 1px 2px #000; /* Text shadow for a bit of depth */
+        }
+        .play-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #007bff; /* Classy blue color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underline from link */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .play-button:hover {
+            background-color: #0056b3; /* Slightly darker blue on hover */
+        }
+        .game-description {
+            font-size: 14px; /* Smaller text for description */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="mainCanvas"></canvas>
+    <div class="text-block">
+        <h1>DevJon</h1>
+        <p>Hey, welcome! I make some things. Let me show you!</p>
+        <a href="amino/idle.html" class="play-button">Click here to play Amino Idle</a>
+        <p class="game-description">
+            Amino Idle is an incremental-idle browser game that crafts unique worlds on every playthrough. The game uses lots of fun geeky stuff like cellular automata to generate a unique world and flocking/path optimization/maze generation etc, this game is a window into a dynamically evolving universe. It's a labor of love, blending intricate mechanics with spontaneous creativity, and I'm excited to share it with the world. Please try it out!
+        </p>
+    </div>
+    <script src="sparklytetris.js"></script>
+</body>
+</html>
