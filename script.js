@@ -1454,6 +1454,30 @@ function terraformCycle() {
 }
 
 
+function simulateTerraformCycle() {
+    // Simulate resource gain for biomites
+    if (Math.random() < 0.51) {
+        let gainAmount = biomitesRate * biomitesMultiplier;
+        biomites += gainAmount;
+    }
+    if (Math.random() < 0.46) {
+        let gainAmount = zymersRate * zymersMultiplier;  // 46% chance for zymers
+        zymers += gainAmount
+    }
+    if (Math.random() < 0.21) {
+        let gainAmount = fibersRate * fibersMultiplier;  // 21% chance for fibers
+        fibers += gainAmount
+    }
+    if (Math.random() < 0.19) {
+        let gainAmount = sludgeRate * sludgeMultiplier;  // 19% chance for sludge
+        sludge += gainAmount
+    }
+    if (Math.random() < 0.05) {
+        let gainAmount = algaeRate * algaeMultiplier;  // 5% chance for algae
+        algae += gainAmount
+    }
+}
+
 // As the function name implies, a quick manual once-off update for newly loaded save games
 function loadGameUpdateTerraformResourcesDisplay() {
   document.getElementById("biomitesCounter").textContent = formatLargeNumber(biomites);
@@ -1990,29 +2014,3 @@ function devHalp() {
     totalcellworkers += 1000;
 }
 
-
-// Function to check for offline time and calculate missed cycles
-// This function handles offline progress logic, for all things
-// Resources, TF Resources, Research, Cave, Solara, future content etc
-function checkForMissedCycles() {
-    const currentTime = Date.now();
-    let timeElapsed = currentTime - lastCheckTime; // Time elapsed in milliseconds
-    // Capping the time elapsed at 30 minutes (1800000 milliseconds)
-    // Yeah, I will change the limit if people start to complain :') 
-    timeElapsed = Math.min(timeElapsed, 1800000);
-    if (timeElapsed > 5000) { // Checking for more than 5 seconds
-        const missedCycles = Math.floor(timeElapsed / TICK_RATE);
-        console.log(`Offline/Inactive for ${timeElapsed / 1000} seconds. Calculating for up to ${Math.min(timeElapsed / 1000, 1800)} seconds. Missed ${missedCycles} regular resource cycles.`);
-        for (let i = 0; i < missedCycles; i++) {
-          updateResourcesForOneCycle();
-        }
-        // TODO: Handle the missed cycles (to be implemented)
-    }
-
-    // Update the last check time
-    lastCheckTime = currentTime;
-}
-
-
-// Start the monitoring function at a regular interval
-setInterval(checkForMissedCycles, TICK_RATE);

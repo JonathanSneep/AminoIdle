@@ -1,4 +1,4 @@
-var saveGameVersion = "0.15";
+var saveGameVersion = "0.16";
 
 function saveGame() {
   isSaving = true;

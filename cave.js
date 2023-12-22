@@ -1639,7 +1639,6 @@ function spawnFringeDweller(x, y) {
 
 
 function dropSaltPeriodically() {
-    console.log('Starting salt drop process...');
     let dropSaltCanvas = document.getElementById('caveCanvas');
     if (caveInitialized) {
         let ctx = dropSaltCanvas.getContext('2d');
@@ -1648,7 +1647,7 @@ function dropSaltPeriodically() {
             if (activeDiggerKeys.length > 0) {
                 let randomDiggerKey = activeDiggerKeys[Math.floor(Math.random() * Math.min(10, activeDiggerKeys.length))];
                 let { x, y } = activeDiggerPositions[randomDiggerKey];
-                console.log(`Selected digger at (${x}, ${y}) for salt drop.`);
+                console.log(`Selected digger at (${x}, ${y}) for cryohaline salt drop.`);
                 let saltTilesCount = Math.floor(Math.random() * 14) + 5; // 5 to 18 tiles
 
                 const dropSaltOnTile = (x, y, count) => {
