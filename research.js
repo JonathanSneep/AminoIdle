@@ -201,7 +201,7 @@ allResearchProjects['IonChannelIII'] = ionChannelIIIResearch;
 let terraformingStudies = new ResearchProject(
     "Terraforming Studies",
     75000, // Let's assume it takes 30 seconds (30000 milliseconds) for simplicity
-    9000, // total information costs, for example
+    7500, // total information costs, for example
     function() {
         // This is the onCompletion callback.
         let researchButton = document.getElementById("TerraformingButton");
@@ -1965,7 +1965,7 @@ function createTerraformingResearchButton() {
         <br>
         <b>Effect:</b> Unlock the ability to terraform environments.
         <br>
-        <b>Requirement:</b> 9K information.
+        <b>Requirement:</b> 7.5K information.
         <br>
         <b>Leads to:</b>
           <ul style="margin-top: 5px; padding-left: 20px;">

@@ -1639,30 +1639,48 @@ function spawnFringeDweller(x, y) {
 
 
 function dropSaltPeriodically() {
+    console.log('Starting salt drop process...');
     let dropSaltCanvas = document.getElementById('caveCanvas');
     if (caveInitialized) {
-      let ctx = dropSaltCanvas.getContext('2d');
-      if (cryohalineExcavationResearchCompleted && !caveFullyExcavated) {
-          let activeDiggerKeys = Object.keys(activeDiggerPositions);
-          if (activeDiggerKeys.length > 0) {
-              let randomDiggerKey = activeDiggerKeys[Math.floor(Math.random() * Math.min(10, activeDiggerKeys.length))];
-              let { x, y } = activeDiggerPositions[randomDiggerKey];
-              let saltTilesCount = Math.floor(Math.random() * 14) + 5; // 5 to 18 tiles
-              for (let i = 0; i < saltTilesCount; i++) {
-                  // Randomizing movement to create an organic path
-                  x += Math.floor(Math.random() * 3) - 1; // Random movement in x (-1, 0, 1)
-                  y += 1; // Move down in y direction
-                  // Boundary check
-                  x = Math.max(0, Math.min(x, 999));
-                  y = Math.max(0, Math.min(y, 999));
-                  // Excavate the tile
-                  excavateTile(x, y, ctx);
-              }
-          }
-      }
+        let ctx = dropSaltCanvas.getContext('2d');
+        if (cryohalineExcavationResearchCompleted && !caveFullyExcavated) {
+            let activeDiggerKeys = Object.keys(activeDiggerPositions);
+            if (activeDiggerKeys.length > 0) {
+                let randomDiggerKey = activeDiggerKeys[Math.floor(Math.random() * Math.min(10, activeDiggerKeys.length))];
+                let { x, y } = activeDiggerPositions[randomDiggerKey];
+                console.log(`Selected digger at (${x}, ${y}) for salt drop.`);
+                let saltTilesCount = Math.floor(Math.random() * 14) + 5; // 5 to 18 tiles
+
+                const dropSaltOnTile = (x, y, count) => {
+                    if (count <= 0) return;
+                    // Randomizing movement to create an organic path
+                    x += Math.floor(Math.random() * 3) - 1; // Random movement in x (-1, 0, 1)
+                    y += 1; // Move down in y direction
+                    // Boundary check
+                    x = Math.max(0, Math.min(x, 999));
+                    y = Math.max(0, Math.min(y, 999));
+                    // Excavate the tile
+                    excavateTile(x, y, ctx);
+                    // Temporarily turn the tile white to mimic salt
+                    ctx.fillStyle = '#FFF';
+                    ctx.fillRect(x, y, 1, 1);
+                    // Restore the tile color after a delay
+                    setTimeout(() => {
+                        let visits = caveVisitedPixels.get(`${x},${y}`) || 0;
+                        let color = ['#333', '#555', '#AAA', '#ADD8E6'][visits];
+                        ctx.fillStyle = color;
+                        ctx.fillRect(x, y, 1, 1);
+                    }, 200); // 0.2s delay
+                    // Process the next tile
+                    setTimeout(() => dropSaltOnTile(x, y, count - 1), 200);
+                };
+
+                dropSaltOnTile(x, y, saltTilesCount);
+            }
+        }
     }
     // Schedule the next salt drop
-    let nextInterval = Math.random() * 40000 + 10000; // 10 to 50 seconds
+    let nextInterval = Math.random() * 20000 + 10000; // 10 to 30 seconds
     setTimeout(() => dropSaltPeriodically(), nextInterval);
 }
 

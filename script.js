@@ -1323,18 +1323,7 @@ function createUniqueWiggleFilter(uniqueID) {
 
 // Base Resources Handler
 function updateResources() {
-    // Update nourishment
-    nourishment += (nourishmentRate + (nourishmentPerTendon * tendons) + (nourishmentPerSegment * cellsegments) + (nourishmentPerWorker * totalcellworkers)) * nourishmentMultiplier;
-    // Update information
-    information += (informationRate + (informationPerTendon * tendons) + (informationPerSegment * cellsegments) + (informationPerWorker * totalcellworkers)) * informationMultiplier;
-    // Update warmth
-    warmth += (warmthRate + (warmthPerTendon * tendons) + (warmthPerSegment * cellsegments) + (warmthPerWorker * totalcellworkers)) * warmthMultiplier;
-    //if (advancedTunnelingIIIResearchCompleted && terraformAssignedDiggers > 5) {
-    //    const warmthToConsume = 30 * (terraformAssignedDiggers - 5);
-    //    warmth = Math.max(0, warmth - warmthToConsume); // This will ensure warmth doesn't go below zero
-    //}
-    // Update energy
-    energy += (energyRate + (energyPerTendon * tendons) + (energyPerSegment * cellsegments)  + (energyPerWorker * totalcellworkers)) * energyMultiplier;
+    updateResourcesForOneCycle(); // Updates Nourishment/Information/Warmth/Energy
     // Update the individual counters directly instead of resetting the entire inner HTML of resourcesDisplay
     document.getElementById("nourishmentCounter").textContent = formatLargeNumber(nourishment);
     document.getElementById("informationCounter").textContent = formatLargeNumber(information);
@@ -1374,6 +1363,13 @@ function updateResources() {
     }
 }
 
+// Single regular resource cycle logic bits
+function updateResourcesForOneCycle() {
+    nourishment += (nourishmentRate + (nourishmentPerTendon * tendons) + (nourishmentPerSegment * cellsegments) + (nourishmentPerWorker * totalcellworkers)) * nourishmentMultiplier;
+    information += (informationRate + (informationPerTendon * tendons) + (informationPerSegment * cellsegments) + (informationPerWorker * totalcellworkers)) * informationMultiplier;
+    warmth += (warmthRate + (warmthPerTendon * tendons) + (warmthPerSegment * cellsegments) + (warmthPerWorker * totalcellworkers)) * warmthMultiplier;
+    energy += (energyRate + (energyPerTendon * tendons) + (energyPerSegment * cellsegments)  + (energyPerWorker * totalcellworkers)) * energyMultiplier;
+}
 
 // Terraform Resources Handler
 function terraformCycle() {
@@ -1994,3 +1990,29 @@ function devHalp() {
     totalcellworkers += 1000;
 }
 
+
+// Function to check for offline time and calculate missed cycles
+// This function handles offline progress logic, for all things
+// Resources, TF Resources, Research, Cave, Solara, future content etc
+function checkForMissedCycles() {
+    const currentTime = Date.now();
+    let timeElapsed = currentTime - lastCheckTime; // Time elapsed in milliseconds
+    // Capping the time elapsed at 30 minutes (1800000 milliseconds)
+    // Yeah, I will change the limit if people start to complain :') 
+    timeElapsed = Math.min(timeElapsed, 1800000);
+    if (timeElapsed > 5000) { // Checking for more than 5 seconds
+        const missedCycles = Math.floor(timeElapsed / TICK_RATE);
+        console.log(`Offline/Inactive for ${timeElapsed / 1000} seconds. Calculating for up to ${Math.min(timeElapsed / 1000, 1800)} seconds. Missed ${missedCycles} regular resource cycles.`);
+        for (let i = 0; i < missedCycles; i++) {
+          updateResourcesForOneCycle();
+        }
+        // TODO: Handle the missed cycles (to be implemented)
+    }
+
+    // Update the last check time
+    lastCheckTime = currentTime;
+}
+
+
+// Start the monitoring function at a regular interval
+setInterval(checkForMissedCycles, TICK_RATE);

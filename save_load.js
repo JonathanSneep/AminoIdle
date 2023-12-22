@@ -31,6 +31,7 @@ function saveGame() {
     resourceConversionCap,
     thankyoucreditsDisplayed,
     currentRunPrestigeGained,
+    lastCheckTime,
     storyQueue,
     currentSpan,
     lastStoryMessage,
@@ -393,6 +394,7 @@ function loadGame() {
     resourceConversionCap = savedGameState.resourceConversionCap;
     thankyoucreditsDisplayed = savedGameState.thankyoucreditsDisplayed;
     currentRunPrestigeGained = savedGameState.currentRunPrestigeGained;
+    lastCheckTime = savedGameState.lastCheckTime;
     storyQueue = savedGameState.storyQueue;
     currentSpan = savedGameState.currentSpan;
     lastStoryMessage = savedGameState.lastStoryMessage;

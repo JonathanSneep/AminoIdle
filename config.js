@@ -16,7 +16,7 @@ var activeMultipliers = {};
 var resourceConversionCap = 1000;
 var thankyoucreditsDisplayed = false;
 var currentRunPrestigeGained = 0;
-let lastTimestamp = Date.now(); // To help handle offline/inactive progress
+var lastCheckTime = Date.now(); // To help handle offline/inactive progress
 // Story settings
 var storyQueue = [];
 var isWriting = false;
