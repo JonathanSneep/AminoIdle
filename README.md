@@ -8,6 +8,14 @@ You start as a simple cell. Your journey is about growth, evolution, and facing 
 
 ## How to Play
 
-Simply visit the game at [Amino Idle on DevJon](https://devjon.com/amino/idle.html) to start your journey. The game is designed to be intuitive and engaging.
+The game has moved to **[aminoidle.com](https://aminoidle.com)**.
+
+The old devjon.com link no longer leads to the game, so please update any bookmarks.
+
+## About this repository
+
+This repository holds the original version of Amino, written in plain JavaScript. It is kept for reference, for anyone curious how the first version worked.
+
+A ground-up rebuild in TypeScript is in progress in a separate repository. It will be linked here once it is public.
 
 Everyone and anyone is welcome to contribute.
